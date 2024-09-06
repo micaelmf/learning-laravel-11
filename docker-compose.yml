@@ -1,0 +1,36 @@
+version: "3.8"
+services:
+    app:
+        build:
+            context: .
+        container_name: laravel_app
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        ports:
+            - "8000:8000"
+        networks:
+            - laravel
+        command: supervisord -c /etc/supervisor/conf.d/supervisord.conf
+
+    db:
+        image: mysql:8.0
+        container_name: mysql_db
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: laravel
+            MYSQL_USER: laravel
+            MYSQL_PASSWORD: secret
+        ports:
+            - "3306:3306"
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - laravel
+
+networks:
+    laravel:
+        driver: bridge
+
+volumes:
+    dbdata:
