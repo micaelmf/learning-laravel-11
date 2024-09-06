@@ -1,4 +1,3 @@
-version: "3.8"
 services:
     app:
         build:
@@ -24,13 +23,9 @@ services:
         ports:
             - "3306:3306"
         volumes:
-            - dbdata:/var/lib/mysql
+            - ./db_data:/var/lib/mysql
         networks:
             - laravel
 
 networks:
     laravel:
-        driver: bridge
-
-volumes:
-    dbdata:
