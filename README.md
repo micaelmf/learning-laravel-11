@@ -10,7 +10,6 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 -   Lixeira para recuperar tarefas excluídas
 -   Validação de dados de entrada
 -   Interface amigável com templates Blade
--   Proteção de rotas com middleware de autenticação
 
 ## Tecnologias Utilizadas
 

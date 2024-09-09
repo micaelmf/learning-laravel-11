@@ -1,0 +1,41 @@
+* {
+    font-family: Arial, sans-serif;
+    transition: 300ms;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    padding: 1rem;
+    text-align: center;
+}
+
+main {
+    padding: 2rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-size: small;
+}
+
+.row {
+    margin-bottom: 16px;
+}
+
+.subtitle {
+    font-size: x-large;
+}
+
+.main-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
