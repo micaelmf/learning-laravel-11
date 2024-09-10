@@ -13,7 +13,9 @@ header {
     text-align: center;
 }
 
-main {
+.container {
+    margin: 0 auto;
+    max-width: 1200px;
     padding: 2rem;
 }
 
@@ -26,16 +28,83 @@ footer {
     font-size: small;
 }
 
-.row {
-    margin-bottom: 16px;
-}
-
-.subtitle {
-    font-size: x-large;
-}
-
-.main-top {
+.submenu {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-direction: column;
+}
+
+.submenu-left {
+    display: flex;
+}
+
+.submenu-left span {
+    font-weight: bold;
+}
+
+.submenu-right {
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+form.filter-form {
+    gap: 8px;
+    border: solid 1px gray;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.filter-form input[type="text"] {
+    min-width: 120px;
+    max-width: 240px;
+    border: none;
+}
+
+.filter-form input[type="text"]:focus {
+    outline: none;
+}
+
+.task-list .task {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-list .task:hover {
+    background-color: lightgray;
+}
+
+.task-list .task-info {
+    display: grid;
+    grid-template-columns: 30px 9fr 1fr 1fr;
+    grid-column-gap: 8px;
+}
+
+.task-list .task-actions {
+    display: flex;
+    align-self: flex-end;
+    gap: 8px;
+}
+
+.task-list .task {
+    border: 1px solid gray;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+@media (min-width: 768px) {
+    .submenu {
+        flex-direction: row;
+    }
+
+    .task-list .task {
+        flex-direction: row;
+    }
 }
