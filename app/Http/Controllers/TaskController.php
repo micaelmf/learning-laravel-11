@@ -61,7 +61,9 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $task = Task::findOrFail($id);
+
+        return view('tasks.edit', compact('task'));
     }
 
     /**
@@ -69,7 +71,37 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'due_date' => 'required|date',
+            'status' => 'required|in:pending,doing,completed'
+        ]);
+
+        $task = Task::findOrFail($id);
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->due_date = $request->due_date;
+        $task->status = $request->status;
+
+        $task->save();
+
+        return redirect()->route('tasks.index');
+    }
+
+    /**
+     * Mark the task as completed.
+     */
+    public function complete(string $id)
+    {
+        $task = Task::findOrFail($id);
+        $task->status = 'completed';
+
+        $task->save();
+
+        return response()->json([
+            'message' => 'Task completed successfully'
+        ]);
     }
 
     /**
@@ -80,6 +112,8 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $task->delete();
 
-        return redirect()->route('tasks.index');
+        return response()->json([
+            'message' => 'Task deleted successfully'
+        ]);
     }
 }

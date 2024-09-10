@@ -22,14 +22,15 @@
                 <div class="task-info">
                     <span class="task-id">{{ $task->id }}</span>
                     <span class="task-name">{{ $task->name }}</span>
-                    <span class="task-date">{{ $task->date }}</span>
+                    <span class="task-date">{{ $task->due_date }}</span>
                     <span class="task-status">{{ $task->status }}</span>
                 </div>
                 <div class="task-actions">
-                    <button type="button" href="{{ route() }}" class="btn btn-danger"><i
-                            class="uil uil-trash"></i></button>
-                    <a href="{{ route('tasks.edit') }}" class="btn btn-secondary"><i class="uil uil-pen"></i></a>
-                    <button type="button" class="btn btn-primary"><i class="uil uil-check"></i></button>
+                    <button type="button" class="btn btn-danger delete"><i class="uil uil-trash"></i></button>
+                    <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-secondary edit">
+                        <i class="uil uil-pen"></i>
+                    </a>
+                    <button type="button" class="btn btn-primary complete"><i class="uil uil-check"></i></button>
                 </div>
             </div>
         @endforeach
@@ -37,30 +38,68 @@
 
     <script>
         $(document).ready(function() {
-            $('.complete-task').on('click', function() {
-                let taskId = $(this).data('id');
+            $('.btn.delete').on('click', function() {
+                const $button = $(this);
+                const $icon = $button.find('i');
+                const taskId = $(this).closest('.task').attr('id');
                 const data = {
-                    _token: '{{ csrf_token() }}',
-                    status: 'completed'
+                    _token: '{{ csrf_token() }}'
                 };
 
                 $.ajax({
-                    url: '/tasks/' + taskId + '/edit',
-                    type: 'PATCH',
+                    url: '/tasks/' + taskId,
+                    type: 'DELETE',
                     data: data,
                     beforeSend: function() {
-                        $('#task-' + taskId + ' .task-status').text('loading...');
+                        $button.find('i').remove();
+                        $button.attr('disabled', true);
+                        $button.append('<i class="uil uil-spinner"></i>');
                     },
                     success: function(response) {
-                        if (response.success) {
-                            $('#task-' + taskId + ' .task-status').text('completed');
-                            alert(response.message);
-                        }
+                        const $task = $button.closest('.task');
+                        $task.hide(300, function() {
+                            $task.remove();
+                        });
                     },
-                    afterSend: function() {
-                        $('#task-' + taskId + ' .task-status').text('completed');
+                    complete: function() {
+                        $button.attr('disabled', false);
+                        $button.find('.uil-spinner').remove();
+                        $button.append($icon);
                     },
                     error: function() {
+                        console.log('error');
+                        $('#task-' + taskId + ' .task-status').text('error');
+                    }
+                });
+            });
+
+            $('.btn.complete').on('click', function() {
+                const $button = $(this);
+                const $icon = $button.find('i');
+                const taskId = $(this).closest('.task').attr('id');
+                const data = {
+                    _token: '{{ csrf_token() }}'
+                };
+
+                $.ajax({
+                    url: `/tasks/${taskId}/complete`,
+                    type: 'PUT',
+                    data: data,
+                    beforeSend: function() {
+                        $button.find('i').remove();
+                        $button.attr('disabled', true);
+                        $button.append('<i class="uil uil-spinner"></i>');
+                    },
+                    success: function(response) {
+                        $button.closest('.task').find('.task-status').text('completed');
+                    },
+                    complete: function() {
+                        $button.attr('disabled', false);
+                        $button.find('.uil-spinner').remove();
+                        $button.append($icon);
+                    },
+                    error: function() {
+                        console.log('error');
                         $('#task-' + taskId + ' .task-status').text('error');
                     }
                 });
