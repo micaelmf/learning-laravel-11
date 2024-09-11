@@ -116,4 +116,17 @@ class TaskController extends Controller
             'message' => 'Task deleted successfully'
         ]);
     }
+
+    /**
+     * Search for a task.
+     */
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $tasks = Task::where('name', 'LIKE', "%{$query}%")
+            ->orWhere('description', 'LIKE', "%{$query}%")
+            ->get();
+
+        return view('tasks.index', compact('tasks'));
+    }
 }

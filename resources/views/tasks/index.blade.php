@@ -8,9 +8,9 @@
             <h2>Lista</h2>
         </div>
         <div class="submenu-right">
-            <form class="filter-form" action="" method="GET">
-                <input type="text" name="search" placeholder="Buscar">
-                <button class="btn btn-outline-primary" type="submit"><i class="uil uil-search"></i></button>
+            <form action="{{ route('tasks.search') }}" method="GET" class="filter-form">
+                <input type="text" name="query" placeholder="Buscar tarefas..." value="{{ request('query') }}">
+                <button type="submit">Buscar</button>
             </form>
             <a class="btn btn-primary" href="{{ route('tasks.create') }}"><i class="uil uil-plus text-center"></i></a>
         </div>
