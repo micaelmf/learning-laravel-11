@@ -8,7 +8,7 @@
             <h2>Lista</h2>
         </div>
         <div class="submenu-right">
-            <form action="{{ route('tasks.search') }}" method="GET" class="filter-form">
+            <form action="{{ route('tasks.index') }}" method="GET" class="filter-form">
                 <input type="text" name="query" placeholder="Buscar tarefas..." value="{{ request('query') }}">
                 <button type="submit">Buscar</button>
             </form>

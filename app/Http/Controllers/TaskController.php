@@ -12,7 +12,14 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::latest()->get();
+        if (request()->has('query')) {
+            $query = request()->input('query');
+            $tasks = Task::where('name', 'LIKE', "%{$query}%")
+                ->orWhere('description', 'LIKE', "%{$query}%")
+                ->get();
+        } else {
+            $tasks = Task::latest()->get();
+        }
 
         return view('tasks.index', compact('tasks'));
     }
@@ -115,18 +122,5 @@ class TaskController extends Controller
         return response()->json([
             'message' => 'Task deleted successfully'
         ]);
-    }
-
-    /**
-     * Search for a task.
-     */
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
-        $tasks = Task::where('name', 'LIKE', "%{$query}%")
-            ->orWhere('description', 'LIKE', "%{$query}%")
-            ->get();
-
-        return view('tasks.index', compact('tasks'));
     }
 }
