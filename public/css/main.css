@@ -89,6 +89,11 @@ footer {
     margin-bottom: 8px;
 }
 
+.delete:hover {
+    background-color: rgb(220 53 69);
+    color: white;
+}
+
 @media (min-width: 768px) {
     .submenu {
         flex-direction: row;

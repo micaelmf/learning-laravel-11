@@ -27,7 +27,7 @@
         @yield('content')
     </main>
 
-    <footer>
+    <footer class="fixed-bottom bg-white">
         <p>&copy; {{ date('Y') }} MyTasks. Todos os direitos reservados.</p>
     </footer>
 

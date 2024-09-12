@@ -27,41 +27,34 @@
         </div>
     </div>
 
-    <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
-
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <img src="..." class="rounded me-2" alt="...">
-                <strong class="me-auto">Bootstrap</strong>
-                <small>11 mins ago</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                Hello, world! This is a toast message.
-            </div>
+    @if (count($tasks) <= 0)
+        <div class="alert alert-warning" role="alert">
+            Nenhuma tarefa encontrada.
         </div>
-    </div>
-
+    @endif
     @foreach ($tasks ?? [] as $task)
-        <div class="card mb-3">
-            <div class="card-header bg-transparent">
+        <div class="card task mb-3 " id="{{ $task->id }}">
+            <div class="card-header text-center bg-transparent d-flex bd-highlight gap-3">
                 <small>#{{ $task->id }}</small>
-                <span class="task-date">{{ $task->due_date }}</span>
+                <span class="me-auto task-date">{{ $task->due_date }}</span>
                 <span class="task-status">{{ $task->status }}</span>
+                <!-- Example split danger button -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary btn-sm complete"><i
+                            class="uil uil-check"></i></button>
+                    <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle dropdown-toggle-split"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item delete" href="#">Delete</a></li>
+                        <li><a class="dropdown-item edit" href="{{ route('tasks.edit', $task->id) }}">Edit</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="card-body">
                 <h4 class="card-title">{{ $task->name }}</h4>
                 <p class="card-text">{{ $task->description }}</p>
-            </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-danger delete"><i class="uil uil-trash"></i></button>
-                <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-secondary edit">
-                    <i class="uil uil-pen"></i>
-                </a>
-                <button type="button" class="btn btn-primary complete">
-                    <i class="uil uil-check"></i>
-                </button>
             </div>
         </div>
     @endforeach
@@ -87,16 +80,10 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var toastTrigger = document.getElementById('liveToastBtn');
-            var toastLiveExample = document.getElementById('liveToast');
-
-            if (toastTrigger) {
-                toastTrigger.addEventListener('click', function() {
-                    var toast = new bootstrap.Toast(toastLiveExample);
-                    toast.show();
-                });
-            }
+        // Inicializar o tooltip
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     </script>
 
