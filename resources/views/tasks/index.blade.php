@@ -8,11 +8,22 @@
             <h2>Lista</h2>
         </div>
         <div class="submenu-right">
-            <form action="{{ route('tasks.index') }}" method="GET" class="filter-form">
-                <input type="text" name="query" placeholder="Buscar tarefas..." value="{{ request('query') }}">
-                <button type="submit">Buscar</button>
+            <form action="{{ route('tasks.index') }}" method="GET">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control" placeholder="Buscar tarefas..."
+                        value="{{ request('query') }}">
+                    <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                        <option value="pending">Pending</option>
+                        <option value="doing">Doing</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <button class="btn btn-outline-primary" type="submit"><i class="uil uil-search"></i></button>
+                </div>
             </form>
-            <a class="btn btn-primary" href="{{ route('tasks.create') }}"><i class="uil uil-plus text-center"></i></a>
+            <a class="btn btn-outline-secondary" href="{{ route('tasks.index') }}" title="Limpar busca"><i
+                    class="uil uil-filter-slash"></i></a>
+            <a class="btn btn-success" href="{{ route('tasks.create') }}" title="Adicionar tarefa"><i
+                    class="uil uil-plus text-center"></i></a>
         </div>
     </div>
 

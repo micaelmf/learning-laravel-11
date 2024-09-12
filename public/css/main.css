@@ -51,22 +51,12 @@ footer {
     align-items: center;
 }
 
-form.filter-form {
-    gap: 8px;
-    border: solid 1px gray;
-    padding: 8px;
-    border-radius: 8px;
-}
-
 .filter-form input[type="text"] {
     min-width: 120px;
     max-width: 240px;
     border: none;
 }
 
-.filter-form input[type="text"]:focus {
-    outline: none;
-}
 
 .task-list .task {
     display: flex;
