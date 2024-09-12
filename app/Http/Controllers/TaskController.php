@@ -12,14 +12,14 @@ class TaskController extends Controller
      */
     public function index()
     {
-        if (request()->has('query')) {
-            $query = request()->input('query');
-            $tasks = Task::where('name', 'LIKE', "%{$query}%")
-                ->orWhere('description', 'LIKE', "%{$query}%")
-                ->get();
-        } else {
-            $tasks = Task::latest()->get();
-        }
+        $query = request()->input('query');
+        $tasks = Task::query()
+            ->when($query, function ($queryBuilder) use ($query) {
+                $queryBuilder->where('name', 'LIKE', "%{$query}%")
+                    ->orWhere('description', 'LIKE', "%{$query}%");
+            })
+            ->latest()
+            ->paginate(10);
 
         return view('tasks.index', compact('tasks'));
     }
