@@ -57,6 +57,24 @@
 
     <div>{{ $tasks->links() }}</div>
 
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="toastWait" class="toast hide align-items-center text-white bg-primary border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">Aguarde...</div>
+            </div>
+        </div>
+
+        <div id="toastSuccess" class="toast hide align-items-center text-white bg-success border-0" role="alert"
+            aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">Sucesso!</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var toastTrigger = document.getElementById('liveToastBtn');
@@ -73,7 +91,12 @@
 
     <script>
         $(document).ready(function() {
-            $('.btn.delete').on('click', function() {
+            const toastWait = new bootstrap.Toast(document.getElementById('toastWait'));
+            const toastSuccess = new bootstrap.Toast(document.getElementById('toastSuccess'));
+
+            $('.delete').on('click', function(e) {
+                e.preventDefault();
+
                 const $button = $(this);
                 const $icon = $button.find('i');
                 const taskId = $(this).closest('.task').attr('id');
@@ -86,6 +109,7 @@
                     type: 'DELETE',
                     data: data,
                     beforeSend: function() {
+                        toastWait.show();
                         $button.find('i').remove();
                         $button.attr('disabled', true);
                         $button.append('<i class="uil uil-spinner"></i>');
@@ -94,21 +118,26 @@
                         const $task = $button.closest('.task');
                         $task.hide(300, function() {
                             $task.remove();
+                            toastWait.hide();
+                            toastSuccess.show();
                         });
                     },
                     complete: function() {
                         $button.attr('disabled', false);
                         $button.find('.uil-spinner').remove();
                         $button.append($icon);
+                        toastWait.hide();
+                        toastSuccess.hide();
                     },
                     error: function() {
+
                         console.log('error');
                         $('#task-' + taskId + ' .task-status').text('error');
                     }
                 });
             });
 
-            $('.btn.complete').on('click', function() {
+            $('.complete').on('click', function() {
                 const $button = $(this);
                 const $icon = $button.find('i');
                 const taskId = $(this).closest('.task').attr('id');
@@ -121,17 +150,22 @@
                     type: 'PUT',
                     data: data,
                     beforeSend: function() {
+                        toastWait.show();
                         $button.find('i').remove();
                         $button.attr('disabled', true);
                         $button.append('<i class="uil uil-spinner"></i>');
                     },
                     success: function(response) {
                         $button.closest('.task').find('.task-status').text('completed');
+                        toastWait.hide();
+                        toastSuccess.show();
                     },
                     complete: function() {
                         $button.attr('disabled', false);
                         $button.find('.uil-spinner').remove();
                         $button.append($icon);
+                        toastWait.hide();
+                        toastSuccess.hide();
                     },
                     error: function() {
                         console.log('error');
