@@ -51,6 +51,8 @@
                 $bgColor = 'bg-primary';
             } elseif ($task->status == 'pending') {
                 $bgColor = 'bg-warning text-dark';
+            } elseif ($task->status == 'archived') {
+                $bgColor = 'bg-secondary';
             }
 
             if ($task->deleted_at) {

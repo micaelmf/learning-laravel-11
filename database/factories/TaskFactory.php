@@ -19,9 +19,9 @@ class TaskFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence,
-            'description' => $this->faker->paragraph,
+            'description' => Random::generate(1) == 1 ? $this->faker->paragraph : null,
             'due_date' => $this->faker->date,
-            'status' => $this->faker->randomElement(['pending', 'doing', 'completed']),
+            'status' => $this->faker->randomElement(['pending', 'doing', 'completed', 'archived']),
             'deleted_at' => Random::generate(1) == 1 ? now() : null,
         ];
     }
