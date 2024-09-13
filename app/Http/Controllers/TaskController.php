@@ -86,15 +86,16 @@ class TaskController extends Controller
         return redirect()->route('tasks.index');
     }
 
-    /**
-     * Mark the task as completed.
-     */
-    public function complete(string $id)
+    public function changeStatus(Request $request, string $id)
     {
-        $this->taskService->complete($id);
+        $request->validate([
+            'status' => 'required|in:pending,doing,completed,archived'
+        ]);
+
+        $this->taskService->changeStatus($id, $request->status);
 
         return response()->json([
-            'message' => 'Task completed successfully'
+            'message' => 'Status changed successfully'
         ]);
     }
 

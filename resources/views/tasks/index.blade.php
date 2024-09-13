@@ -42,21 +42,9 @@
         @foreach ($tasks ?? [] as $task)
             <?php
             $task->due_date = (new DateTimeImmutable($task->due_date))->format('d/m/Y');
-            $bgColor = '';
             $textDecoration = '';
 
-            if ($task->status === 'completed') {
-                $bgColor = 'bg-success';
-            } elseif ($task->status == 'doing') {
-                $bgColor = 'bg-primary';
-            } elseif ($task->status == 'pending') {
-                $bgColor = 'bg-warning text-dark';
-            } elseif ($task->status == 'archived') {
-                $bgColor = 'bg-secondary';
-            }
-
             if ($task->deleted_at) {
-                $bgColor = 'bg-dark';
                 $textDecoration = 'text-decoration-line-through text-muted';
             }
             ?>
@@ -64,23 +52,60 @@
                 <div class="card-header text-center d-flex bd-highlight gap-3 align-items-center">
                     <small>#{{ $task->id }}</small>
                     <span class="me-auto task-date">{{ $task->due_date }}</span>
-                    <span class="task-status badge rounded-pill {{ $bgColor }}">{{ $task->status }}</span>
+                    <span class="task-status badge rounded-pill">{{ $task->status }}</span>
                     <!-- Example split danger button -->
 
                     @if (!$task->deleted_at)
                         <div class="btn-group">
                             <button type="button" title="Complete task" aria-label="Complete task"
-                                class="btn btn-outline-secondary btn-sm complete">
+                                class="btn btn-outline-success btn-sm change-status" data-status="completed">
                                 <i class="uil uil-check"></i>
                             </button>
                             <button type="button"
-                                class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split"
+                                class="btn btn-outline-success btn-sm dropdown-toggle dropdown-toggle-split"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item delete" href="#">Delete</a></li>
-                                <li><a class="dropdown-item edit" href="{{ route('tasks.edit', $task->id) }}">Edit</a></li>
+                                <li>
+                                    <button type="button" class="dropdown-item change-status" data-status="pending">
+                                        <span class="text-warning">■</span>
+                                        Pending
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item change-status" data-status="doing">
+                                        <span class="text-primary">■</span>
+                                        Doing
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item change-status" data-status="completed">
+                                        <span class="text-success">■</span>
+                                        Completed
+                                    </button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item change-status" data-status="archived">
+                                        <span class="text-secondary">■</span>
+                                        Archived
+                                    </button>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item delete">
+                                        <span class="uil uil-trash-alt"></span>
+                                        Delete
+                                    </button>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item edit" href="{{ route('tasks.edit', $task->id) }}">
+                                        <i class="uil uil-edit"></i>
+                                        Edit
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     @endif
@@ -169,16 +194,18 @@
                 });
             });
 
-            $('.complete').on('click', function() {
+            $('.change-status').on('click', function() {
                 const $button = $(this);
                 const $icon = $button.find('i');
                 const taskId = $(this).closest('.task').attr('id');
+                const newStatus = $button.data('status');
                 const data = {
-                    _token: '{{ csrf_token() }}'
+                    _token: '{{ csrf_token() }}',
+                    status: newStatus
                 };
 
                 $.ajax({
-                    url: `/tasks/${taskId}/complete`,
+                    url: `/tasks/${taskId}/status`,
                     type: 'PUT',
                     data: data,
                     beforeSend: function() {
@@ -188,7 +215,12 @@
                         $button.append('<i class="uil uil-spinner"></i>');
                     },
                     success: function(response) {
-                        $button.closest('.task').find('.task-status').text('completed');
+                        const $badge = $button.closest('.task').find('.task-status');
+                        $badge.text(newStatus);
+                        $badge.removeClass(
+                            'bg-success bg-primary bg-warning bg-secondary bg-dark text-white text-dark'
+                        );
+                        $badge.addClass(`${badgeStyle(newStatus)}`);
                         toastWait.hide();
                         toastSuccess.show();
                     },
@@ -205,6 +237,33 @@
                     }
                 });
             });
+
+            handleBadges();
         });
+
+        function handleBadges() {
+            $('.task-status').each(function() {
+                const status = $(this).text();
+                $(this).addClass(badgeStyle(status));
+            });
+        }
+
+        function badgeStyle(status) {
+            let style = '';
+
+            if (status === 'completed') {
+                style = 'bg-success text-white';
+            } else if (status === 'doing') {
+                style = 'bg-primary text-white';
+            } else if (status === 'pending') {
+                style = 'bg-warning text-dark';
+            } else if (status === 'archived') {
+                style = 'bg-secondary text-white';
+            } else {
+                style = 'bg-dark text-white';
+            }
+
+            return style;
+        }
     </script>
 @endsection

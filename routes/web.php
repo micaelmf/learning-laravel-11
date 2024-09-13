@@ -8,4 +8,4 @@ Route::get('/', function () {
 });
 
 Route::resource('tasks', TaskController::class);
-Route::put('tasks/{id}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
+Route::put('tasks/{id}/status', [TaskController::class, 'changeStatus'])->name('tasks.changeStatus');

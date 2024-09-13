@@ -47,8 +47,8 @@ class TaskService
         return $this->taskRepository->restoreTask($id);
     }
 
-    public function complete(string $id)
+    public function changeStatus(string $id, string $status)
     {
-        return $this->taskRepository->complete($id);
+        return $this->taskRepository->changeStatus($id, $status);
     }
 }

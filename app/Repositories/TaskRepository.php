@@ -85,14 +85,12 @@ class TaskRepository
         return $task->restore();
     }
 
-    public function complete(string $id)
+    public function changeStatus(string $id, string $status)
     {
         $task = $this->task->findOrFail($id);
 
-        $task->status = 'completed';
+        $task->status = $status;
 
-        $task->save();
-
-        return $task;
+        return $task->save();
     }
 }
