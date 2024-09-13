@@ -47,13 +47,15 @@
 
             if ($task->status === 'completed') {
                 $bgColor = 'bg-success';
-            } elseif ($task->deleted_at) {
-                $bgColor = 'bg-dark';
-                $textDecoration = 'text-decoration-line-through text-muted';
             } elseif ($task->status == 'doing') {
                 $bgColor = 'bg-primary';
             } elseif ($task->status == 'pending') {
                 $bgColor = 'bg-warning text-dark';
+            }
+
+            if ($task->deleted_at) {
+                $bgColor = 'bg-dark';
+                $textDecoration = 'text-decoration-line-through text-muted';
             }
             ?>
             <div class="card task mb-3 {{ $textDecoration }}" id="{{ $task->id }}">
