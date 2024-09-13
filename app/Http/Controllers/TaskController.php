@@ -31,7 +31,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        return view('tasks.create');
+        return view('tasks.form');
     }
 
     /**
@@ -66,7 +66,7 @@ class TaskController extends Controller
     {
         $task = $this->taskService->getTask($id);
 
-        return view('tasks.edit', compact('task'));
+        return view('tasks.form', compact('task'));
     }
 
     /**
