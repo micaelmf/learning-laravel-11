@@ -25,7 +25,11 @@ class TaskController extends Controller
         }
 
         if ($status) {
-            $tasks->where('status', $status);
+            if ($status !== 'deleted') {
+                $tasks->where('status', $status);
+            } else {
+                $tasks->onlyTrashed();
+            }
         }
 
         $tasks = $tasks->latest()

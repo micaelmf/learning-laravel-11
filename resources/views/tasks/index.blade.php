@@ -43,6 +43,7 @@
             <?php
             $task->due_date = (new DateTimeImmutable($task->due_date))->format('d/m/Y');
             $bgColor = '';
+            $textDecoration = '';
 
             if ($task->status === 'completed') {
                 $bgColor = 'bg-success';
@@ -61,21 +62,24 @@
                     <span class="me-auto task-date">{{ $task->due_date }}</span>
                     <span class="task-status badge rounded-pill {{ $bgColor }}">{{ $task->status }}</span>
                     <!-- Example split danger button -->
-                    <div class="btn-group">
-                        <button type="button" title="Complete task" aria-label="Complete task"
-                            class="btn btn-outline-secondary btn-sm complete">
-                            <i class="uil uil-check"></i>
-                        </button>
-                        <button type="button"
-                            class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item delete" href="#">Delete</a></li>
-                            <li><a class="dropdown-item edit" href="{{ route('tasks.edit', $task->id) }}">Edit</a></li>
-                        </ul>
-                    </div>
+
+                    @if (!$task->deleted_at)
+                        <div class="btn-group">
+                            <button type="button" title="Complete task" aria-label="Complete task"
+                                class="btn btn-outline-secondary btn-sm complete">
+                                <i class="uil uil-check"></i>
+                            </button>
+                            <button type="button"
+                                class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item delete" href="#">Delete</a></li>
+                                <li><a class="dropdown-item edit" href="{{ route('tasks.edit', $task->id) }}">Edit</a></li>
+                            </ul>
+                        </div>
+                    @endif
                 </div>
                 <div class="card-body">
                     <h4 class="card-title">{{ $task->name }}</h4>
