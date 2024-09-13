@@ -17,6 +17,7 @@
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
                         <option value="doing" {{ request('status') == 'doing' ? 'selected' : '' }}>Doing</option>
                         <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed
+                        <option value="archived" {{ request('status') == 'archived' ? 'selected' : '' }}>Archived
                         </option>
                         <option value="deleted" {{ request('status') == 'deleted' ? 'selected' : '' }}>Deleted</option>
                     </select>
