@@ -12,11 +12,13 @@
                 <div class="input-group">
                     <input type="text" name="query" class="form-control" placeholder="Search"
                         value="{{ request('query') }}">
-                    <select class="form-select" id="inputGroupSelect04" aria-label="Select state">
-                        <option value="pending">Pending</option>
-                        <option value="doing">Doing</option>
-                        <option value="completed">Completed</option>
-                        <option value="deleted">Deleted</option>
+                    <select name="status" class="form-select" id="inputGroupSelect04" aria-label="Select state">
+                        <option value="">All</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                        <option value="doing" {{ request('status') == 'doing' ? 'selected' : '' }}>Doing</option>
+                        <option value="completed" {{ request('status') == 'completed' ? 'selected' : '' }}>Completed
+                        </option>
+                        <option value="deleted" {{ request('status') == 'deleted' ? 'selected' : '' }}>Deleted</option>
                     </select>
                     <button class="btn btn-outline-primary" type="submit" title="Search" aria-label="Search"><i
                             class="uil uil-search"></i></button>

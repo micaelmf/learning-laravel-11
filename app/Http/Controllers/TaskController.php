@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
@@ -13,12 +14,21 @@ class TaskController extends Controller
     public function index()
     {
         $query = request()->input('query');
-        $tasks = Task::query()
-            ->when($query, function ($queryBuilder) use ($query) {
+        $status = request()->input('status');
+        $tasks = Task::query();
+
+        if ($query) {
+            $tasks->where(function ($queryBuilder) use ($query) {
                 $queryBuilder->where('name', 'LIKE', "%{$query}%")
                     ->orWhere('description', 'LIKE', "%{$query}%");
-            })
-            ->latest()
+            });
+        }
+
+        if ($status) {
+            $tasks->where('status', $status);
+        }
+
+        $tasks = $tasks->latest()
             ->paginate(10);
 
         return view('tasks.index', compact('tasks'));
