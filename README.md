@@ -1,25 +1,32 @@
 # Projeto Laravel de Gerenciamento de Tarefas
 
-Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do List) desenvolvido com o framework Laravel. O objetivo deste projeto é demonstrar a aplicação de conceitos fundamentais do Laravel, como autenticação de usuários, operações CRUD, validação de formulários, roteamento, Eloquent ORM, migrations, templates Blade e middleware.
-
-## Funcionalidades
-
-### v0.1.0
-
-- [ ] Registro e login de usuários \
-- [x] Criação, leitura, atualização e exclusão de tarefas \
-- [x]Marcar tarefas como concluídas \
-- [ ]Lixeira para recuperar tarefas excluídas \
-- [x]Validação de dados de entrada \
-- [x]Interface amigável com templates Blade e Bootstrap
+Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do List) desenvolvido com o framework Laravel 11 e PHP 8.3. O objetivo deste projeto é demonstrar a aplicação de conceitos fundamentais do Laravel, como autenticação de usuários, operações CRUD, validação de formulários, roteamento, Eloquent ORM, migrations, templates Blade e middleware e etc.
 
 ## Tecnologias Utilizadas
 
 - Laravel
 - Docker
-- Composer
 - MySQL
 - Blade Templates
+- Bootstrap 5
+- Jquery
+
+## Conceitos aplicados
+
+- **Arquitetura MVC (Model-View-Controller):** Separação da lógica de negócios, apresentação e controle.
+- **Injeção de Dependência**: Uso de serviços e repositórios para gerenciar dependências.
+- **Validação de Dados**: Validação de entrada de dados usando Request Forms.
+- **Autenticação e Autorização**: Registro e login de usuários, controle de acesso.
+- **Migrations e Seeders**: Gerenciamento de banco de dados com migrações e preenchimento de dados iniciais.
+- **Eloquent ORM**: Interação com o banco de dados usando o ORM do Laravel.
+- **Blade Templates**: Criação de views dinâmicas e reutilizáveis.
+- **Bootstrap**: Estilização e criação de uma interface amigável.
+- **Rotas e Controladores**: Definição de rotas e lógica de controle.
+- **Middlewares**: Interceptação de requisições HTTP para aplicar lógica antes de chegar ao controlador.
+- **Trabalhos em Background (Queues)**: Execução de tarefas em segundo plano.
+- **Testes Automatizados**: Testes unitários e de integração para garantir a qualidade do código.
+- **Docker**: Contêinerização da aplicação para facilitar o desenvolvimento e a implantação.
+- **erenciamento de Dependências com Composer**: Instalação e atualização de pacotes PHP.
 
 ## Como executar
 
@@ -81,3 +88,15 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
    ```bash
    sudo chown -R $USER:$USER /home/micael/projects/laravel-project
    ```
+
+## Funcionalidades
+
+### v0.1.0
+
+- [ ] Registro e login de usuários
+- [x] Criação, leitura, atualização e exclusão de tarefas
+- [x] Marcar tarefas como concluídas
+- [ ] Arquivar
+- [ ] Lixeira para recuperar tarefas excluídas
+- [x] Validação de dados de entrada
+- [x] Interface amigável com templates Blade e Bootstrap
