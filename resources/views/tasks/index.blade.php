@@ -47,8 +47,10 @@
                     <span class="task-status">{{ $task->status }}</span>
                     <!-- Example split danger button -->
                     <div class="btn-group">
-                        <button type="button" class="btn btn-outline-primary btn-sm complete"><i
-                                class="uil uil-check"></i></button>
+                        <button type="button" title="Complete task" aria-label="Complete task"
+                            class="btn btn-outline-primary btn-sm complete">
+                            <i class="uil uil-check"></i>
+                        </button>
                         <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle dropdown-toggle-split"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>

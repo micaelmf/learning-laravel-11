@@ -28,7 +28,7 @@
     </main>
 
     <footer class="fixed-bottom bg-white">
-        <p>&copy; {{ date('Y') }} MyTasks. Todos os direitos reservados.</p>
+        <p>&copy; {{ date('Y') }} MyTasks. all rights reserved.</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
