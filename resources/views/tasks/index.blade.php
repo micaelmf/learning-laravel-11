@@ -5,36 +5,42 @@
 @section('content')
     <div class="submenu">
         <div class="submenu-left">
-            <h2>Lista</h2>
+            <h2>List</h2>
         </div>
         <div class="submenu-right">
             <form action="{{ route('tasks.index') }}" method="GET">
                 <div class="input-group">
-                    <input type="text" name="query" class="form-control" placeholder="Buscar tarefas..."
+                    <input type="text" name="query" class="form-control" placeholder="Search"
                         value="{{ request('query') }}">
-                    <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                    <select class="form-select" id="inputGroupSelect04" aria-label="Select state">
                         <option value="pending">Pending</option>
                         <option value="doing">Doing</option>
                         <option value="completed">Completed</option>
+                        <option value="deleted">Deleted</option>
                     </select>
-                    <button class="btn btn-outline-primary" type="submit"><i class="uil uil-search"></i></button>
+                    <button class="btn btn-outline-primary" type="submit" title="Search" aria-label="Search"><i
+                            class="uil uil-search"></i></button>
                 </div>
             </form>
-            <a class="btn btn-outline-secondary" href="{{ route('tasks.index') }}" title="Limpar busca"><i
-                    class="uil uil-filter-slash"></i></a>
-            <a class="btn btn-success" href="{{ route('tasks.create') }}" title="Adicionar tarefa"><i
-                    class="uil uil-plus text-center"></i></a>
+            <a class="btn btn-outline-secondary" href="{{ route('tasks.index') }}" title="Clear search"
+                aria-label="Clear search">
+                <i class="uil uil-filter-slash"></i>
+            </a>
+            <a class="btn btn-success" href="{{ route('tasks.create') }}" title="Add task" aria-label="Add task">
+                <i class="uil uil-plus text-center"></i>
+            </a>
         </div>
     </div>
 
     @if (count($tasks) <= 0)
         <div class="alert alert-warning" role="alert">
-            Nenhuma tarefa encontrada.
+            No tasks found.
         </div>
     @endif
+
     @foreach ($tasks ?? [] as $task)
         <div class="card task mb-3 " id="{{ $task->id }}">
-            <div class="card-header text-center bg-transparent d-flex bd-highlight gap-3">
+            <div class="card-header text-center bg-transparent d-flex bd-highlight gap-3 align-items-center">
                 <small>#{{ $task->id }}</small>
                 <span class="me-auto task-date">{{ $task->due_date }}</span>
                 <span class="task-status">{{ $task->status }}</span>
@@ -65,14 +71,14 @@
         <div id="toastWait" class="toast hide align-items-center text-white bg-primary border-0" role="alert"
             aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
-                <div class="toast-body">Aguarde...</div>
+                <div class="toast-body">Wait...</div>
             </div>
         </div>
 
         <div id="toastSuccess" class="toast hide align-items-center text-white bg-success border-0" role="alert"
             aria-live="assertive" aria-atomic="true">
             <div class="d-flex">
-                <div class="toast-body">Sucesso!</div>
+                <div class="toast-body">Success!</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                     aria-label="Close"></button>
             </div>
