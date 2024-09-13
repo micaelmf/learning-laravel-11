@@ -4,12 +4,14 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 
 ## Funcionalidades
 
-[ ] Registro e login de usuários
-[x] Criação, leitura, atualização e exclusão de tarefas
-[x] Marcar tarefas como concluídas
-[ ] Lixeira para recuperar tarefas excluídas
-[x] Validação de dados de entrada
-[x] Interface amigável com templates Blade
+### Versão 1
+
+-   □ Registro e login de usuários
+-   ■ Criação, leitura, atualização e exclusão de tarefas
+-   ■ Marcar tarefas como concluídas
+-   □ Lixeira para recuperar tarefas excluídas
+-   ■ Validação de dados de entrada
+-   ■ Interface amigável com templates Blade e Bootstrap
 
 ## Tecnologias Utilizadas
 
@@ -21,18 +23,28 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 
 ## Como executar
 
-1. Clone o repositório \
-   git clone https://github.com/seu-usuario/laravel-project.git \
-   cd laravel-project
+1. Clone o repositório
+    ```
+    git clone https://github.com/seu-usuario/laravel-project.git
+    cd laravel-project
+    ```
 2. Copie o arquivo .env.example para .env e atualize as configurações conforme necessário.
-3. Construa e inicie os contêineres Docker: \
-   docker-compose up -d
-4. Instale as dependências do Composer: \
-   docker-compose exec app composer install
-5. Execute as migrações do banco de dados: \
-   docker-compose exec app php artisan migrate
-6. Acesse o projeto no navegador: \
-7. O projeto estará disponível em http://localhost:8000/.
+3. Construa e inicie os contêineres Docker:
+    ```
+    docker-compose up -d
+    ```
+4. Instale as dependências do Composer:
+    ```
+    docker-compose exec app composer install
+    ```
+5. Execute as migrações do banco de dados:
+    ```
+    docker-compose exec app php artisan migrate
+    ```
+6. Acesse o projeto no navegador:
+    ```
+    http://localhost:8000/
+    ```
 
 ## Passos utilizados para a criação do projeto
 
@@ -40,9 +52,15 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 2. Instalar o laravel via composer
 3. Configurar o Dockerfile e docker-compose.yml
 4. Atualizar as constentes do banco de dados no .env
-5. Rodar as migrações \
-   docker-compose exec app php artisan migrate
-6. Instalar api \
-   docker-compose exec app php artisan install:api
-7. Definir as permissões do arquivos e pastas \
-   sudo chown -R $USER:$USER /home/micael/projects/laravel-project
+5. Rodar as migrações
+    ```
+    docker-compose exec app php artisan migrate
+    ```
+6. Instalar api
+    ```
+    docker-compose exec app php artisan install:api
+    ```
+7. Definir as permissões do arquivos e pastas
+    ```
+    sudo chown -R $USER:$USER /home/micael/projects/laravel-project
+    ```
