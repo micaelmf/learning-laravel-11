@@ -6,12 +6,12 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 
 ### Versão 1
 
--   □ Registro e login de usuários
--   ■ Criação, leitura, atualização e exclusão de tarefas
--   ■ Marcar tarefas como concluídas
--   □ Lixeira para recuperar tarefas excluídas
--   ■ Validação de dados de entrada
--   ■ Interface amigável com templates Blade e Bootstrap
+□ Registro e login de usuários \
+■ Criação, leitura, atualização e exclusão de tarefas \
+■ Marcar tarefas como concluídas \
+□ Lixeira para recuperar tarefas excluídas \
+■ Validação de dados de entrada \
+■ Interface amigável com templates Blade e Bootstrap
 
 ## Tecnologias Utilizadas
 
