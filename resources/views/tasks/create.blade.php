@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="col mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="description"></textarea>
+                        <textarea class="form-control" id="description" name="description" rows="5"></textarea>
                     </div>
                 </div>
                 <div class="row">

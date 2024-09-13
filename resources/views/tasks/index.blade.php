@@ -40,18 +40,34 @@
         </div>
     @else
         @foreach ($tasks ?? [] as $task)
-            <div class="card task mb-3 " id="{{ $task->id }}">
-                <div class="card-header text-center bg-transparent d-flex bd-highlight gap-3 align-items-center">
+            <?php
+            $task->due_date = (new DateTimeImmutable($task->due_date))->format('d/m/Y');
+            $bgColor = '';
+
+            if ($task->status === 'completed') {
+                $bgColor = 'bg-success';
+            } elseif ($task->deleted_at) {
+                $bgColor = 'bg-dark';
+                $textDecoration = 'text-decoration-line-through text-muted';
+            } elseif ($task->status == 'doing') {
+                $bgColor = 'bg-primary';
+            } elseif ($task->status == 'pending') {
+                $bgColor = 'bg-warning text-dark';
+            }
+            ?>
+            <div class="card task mb-3 {{ $textDecoration }}" id="{{ $task->id }}">
+                <div class="card-header text-center d-flex bd-highlight gap-3 align-items-center">
                     <small>#{{ $task->id }}</small>
                     <span class="me-auto task-date">{{ $task->due_date }}</span>
-                    <span class="task-status">{{ $task->status }}</span>
+                    <span class="task-status badge rounded-pill {{ $bgColor }}">{{ $task->status }}</span>
                     <!-- Example split danger button -->
                     <div class="btn-group">
                         <button type="button" title="Complete task" aria-label="Complete task"
-                            class="btn btn-outline-primary btn-sm complete">
+                            class="btn btn-outline-secondary btn-sm complete">
                             <i class="uil uil-check"></i>
                         </button>
-                        <button type="button" class="btn btn-outline-primary btn-sm dropdown-toggle dropdown-toggle-split"
+                        <button type="button"
+                            class="btn btn-outline-secondary btn-sm dropdown-toggle dropdown-toggle-split"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <span class="visually-hidden">Toggle Dropdown</span>
                         </button>
