@@ -2,38 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
+use App\Services\TaskService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
 {
+    protected $taskService;
+
+    public function __construct(TaskService $taskService)
+    {
+        $this->taskService = $taskService;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $query = request()->input('query');
-        $status = request()->input('status');
-        $tasks = Task::query();
-
-        if ($query) {
-            $tasks->where(function ($queryBuilder) use ($query) {
-                $queryBuilder->where('name', 'LIKE', "%{$query}%")
-                    ->orWhere('description', 'LIKE', "%{$query}%");
-            });
-        }
-
-        if ($status) {
-            if ($status !== 'deleted') {
-                $tasks->where('status', $status);
-            } else {
-                $tasks->onlyTrashed();
-            }
-        }
-
-        $tasks = $tasks->latest()
-            ->paginate(10);
+        // Get all params from the request
+        $params = $request->all();
+        $tasks = $this->taskService->getTasks($params);
 
         return view('tasks.index', compact('tasks'));
     }
@@ -58,13 +46,7 @@ class TaskController extends Controller
             'status' => 'required|in:pending,doing,completed'
         ]);
 
-        $task = new Task();
-        $task->name = $request->name;
-        $task->description = $request->description;
-        $task->due_date = $request->due_date;
-        $task->status = $request->status;
-
-        $task->save();
+        $this->taskService->createTask($request->all());
 
         return redirect()->route('tasks.index');
     }
@@ -82,7 +64,7 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        $task = Task::findOrFail($id);
+        $task = $this->taskService->getTask($id);
 
         return view('tasks.edit', compact('task'));
     }
@@ -99,13 +81,7 @@ class TaskController extends Controller
             'status' => 'required|in:pending,doing,completed'
         ]);
 
-        $task = Task::findOrFail($id);
-        $task->name = $request->name;
-        $task->description = $request->description;
-        $task->due_date = $request->due_date;
-        $task->status = $request->status;
-
-        $task->save();
+        $this->taskService->updateTask($id, $request->all());
 
         return redirect()->route('tasks.index');
     }
@@ -115,10 +91,7 @@ class TaskController extends Controller
      */
     public function complete(string $id)
     {
-        $task = Task::findOrFail($id);
-        $task->status = 'completed';
-
-        $task->save();
+        $this->taskService->complete($id);
 
         return response()->json([
             'message' => 'Task completed successfully'
@@ -130,8 +103,7 @@ class TaskController extends Controller
      */
     public function destroy(string $id)
     {
-        $task = Task::findOrFail($id);
-        $task->delete();
+        $this->taskService->deleteTask($id);
 
         return response()->json([
             'message' => 'Task deleted successfully'

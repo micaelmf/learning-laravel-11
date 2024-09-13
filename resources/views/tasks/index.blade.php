@@ -10,8 +10,8 @@
         <div class="submenu-right">
             <form action="{{ route('tasks.index') }}" method="GET">
                 <div class="input-group">
-                    <input type="text" name="query" class="form-control" placeholder="Search"
-                        value="{{ request('query') }}">
+                    <input type="text" name="term" class="form-control" placeholder="Search"
+                        value="{{ request('term') }}">
                     <select name="status" class="form-select" id="inputGroupSelect04" aria-label="Select state">
                         <option value="">All</option>
                         <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
