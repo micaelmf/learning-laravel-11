@@ -29,7 +29,28 @@ class TaskService
 
     public function createTask(array $data)
     {
-        return $this->taskRepository->createTask($data);
+        $task = $this->taskRepository->createTask($data);
+
+        if (isset($data['reminder'])) {
+            // converter o formato 30_minutes_before em uma data baseado na data de vencimento
+            $data['reminder'] = array_map(function ($reminder) use ($task) {
+                $explode = explode('_', $reminder);
+                $timeQuantity = $explode['0'];
+                $timeUnit = $explode['1'];
+                $reminderDate = date('Y-m-d H:i:s', strtotime($task->due_date . ' - ' . $timeQuantity . ' ' . $timeUnit));
+
+                return [
+                    'reminder_date' => $reminderDate,
+                    'user_id' => auth()->id(),
+                ];
+            }, $data['reminder']);
+
+            dd($data['reminder']);
+
+            $task->reminders()->createMany($data['reminder']);
+        }
+
+        return $task;
     }
 
     public function updateTask(string $id, array $data)

@@ -21,4 +21,10 @@ class Task extends Model
         'due_date',
         'status',
     ];
+
+    // Uma tarefa pode ter muitos lembretes
+    public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
+    }
 }

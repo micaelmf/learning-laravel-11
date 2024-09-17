@@ -57,6 +57,12 @@ footer {
     color: white;
 }
 
+.required::after {
+    content: '*';
+    color: red;
+    font-weight: bold;
+}
+
 @media (min-width: 768px) {
     .submenu {
         flex-direction: row;
