@@ -45,7 +45,7 @@
                         @if ($method === 'PUT')
                             @method('PUT')
                         @endif
-                        <div class="grid grid-cols-1 gap-6">
+                        <div class="grid grid-cols-1 gap-6 mb-4">
                             <div>
                                 <label for="name"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
@@ -88,6 +88,16 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Reminders</h2>
+                            <button type="button" id="add_reminder"
+                                class="inline-flex items-center px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-500 dark:hover:bg-green-400 active:bg-green-700 dark:active:bg-green-600 focus:outline-none focus:border-green-700 focus:ring ring-green-300 dark:focus:ring-green-600 disabled:opacity-25 transition ease-in-out duration-150">
+                                Add Reminder
+                            </button>
+                        </div>
+                        @include('tasks.reminder')
+
                         <div class="mt-6 flex justify-between">
                             <a class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-gray-600 active:bg-gray-900 dark:active:bg-gray-800 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 dark:focus:ring-gray-600 disabled:opacity-25 transition ease-in-out duration-150"
                                 href="{{ route('tasks.index') }}">Back</a>
