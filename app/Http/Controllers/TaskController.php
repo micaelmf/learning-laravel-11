@@ -39,16 +39,21 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'due_date' => 'required|date',
-            'status' => 'required|in:pending,doing,completed'
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'due_date' => 'required|date',
+                'status' => 'required|in:pending,doing,completed',
+                'preset_time' => 'required|string',
+            ]);
 
-        $this->taskService->createTask($request->all());
+            $this->taskService->createTask($request->all());
 
-        return redirect()->route('tasks.index');
+            return redirect()->route('tasks.index');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors($e->getMessage());
+        }
     }
 
     /**
@@ -74,16 +79,20 @@ class TaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'string',
-            'due_date' => 'required|date',
-            'status' => 'required|in:pending,doing,completed'
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'due_date' => 'required|date',
+                'status' => 'required|in:pending,doing,completed'
+            ]);
 
-        $this->taskService->updateTask($id, $request->all());
+            $this->taskService->updateTask($id, $request->all());
 
-        return redirect()->route('tasks.index');
+            return redirect()->route('tasks.index');
+        } catch (\Exception $e) {
+            return back()->withInput()->withErrors($e->getMessage());
+        }
     }
 
     public function changeStatus(Request $request, string $id)
