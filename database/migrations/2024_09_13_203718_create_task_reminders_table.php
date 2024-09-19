@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('task_reminders', function (Blueprint $table) {
             $table->id();
-            $table->string('message');
-            $table->timestamp('reminder_time');
-            $table->boolean('is_sent')->default(false);
+            $table->string('preset_time');
+            $table->timestamp('reminder_time')->nullable();
+            $table->enum('send_by', ['popup', 'email', 'sms'])->default('popup');
+            $table->enum('status', ['pending', 'prepared', 'sent'])->default('pending');
+            $table->string('job_id')->nullable();
             $table->foreignId('task_id')->constrained('tasks')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
