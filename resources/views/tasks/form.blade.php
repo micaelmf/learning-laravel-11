@@ -27,16 +27,25 @@
                     @endif
 
                     <?php
+
                     $task = $task ?? new stdClass();
 
                     if ($task->id ?? '') {
                         $route = route('tasks.update', $task->id ?? '');
                         $method = 'PUT';
 
-                        $task->due_date = (new DateTimeImmutable($task->due_date))->format('Y-m-d');
+                        $task->due_date = (new DateTimeImmutable($task->due_date))->format('Y-m-d H:m');
                     } else {
                         $route = route('tasks.store');
                         $method = 'POST';
+
+                        $task->name = old('name', '');
+                        $task->description = old('description', '');
+                        $task->status = old('status', 'pending');
+                        $task->due_date = old('due_date', date('Y-m-d H:m'));
+
+                        $task->reminders = [new stdClass()];
+                        $task->reminders[0]->preset_time = old('preset_time', '5_minutes_before');
                     }
                     ?>
 
@@ -51,14 +60,14 @@
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
                                 <input type="text" id="name" name="name"
                                     class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300"
-                                    placeholder="Name" value="{{ old('name', $task->name ?? '') }}">
+                                    placeholder="Name" value="{{ $task->name }}">
                             </div>
                             <div>
                                 <label for="description"
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
                                 <textarea
                                     class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300"
-                                    id="description" name="description" rows="5">{{ old('description', $task->description ?? '') }}</textarea>
+                                    id="description" name="description" rows="5">{{ $task->description }}</textarea>
                             </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
@@ -66,37 +75,55 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
                                     <select id="status" name="status"
                                         class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300">
-                                        <option value="pending"
-                                            {{ old('status', $task->status ?? '' == 'pending' ? 'selected' : '') }}>
+                                        <option value="pending" {{ $task->status == 'pending' ? 'selected' : '' }}>
                                             Pending
                                         </option>
-                                        <option value="doing"
-                                            {{ old('status', $task->status ?? '' == 'doing' ? 'selected' : '') }}>Doing
+                                        <option value="doing" {{ $task->status == 'doing' ? 'selected' : '' }}>
+                                            Doing
                                         </option>
-                                        <option value="completed"
-                                            {{ old('status', $task->status ?? '' == 'completed' ? 'selected' : '') }}>
-                                            Completed</option>
+                                        <option value="completed" {{ $task->status == 'completed' ? 'selected' : '' }}>
+                                            Completed
+                                        </option>
                                     </select>
                                 </div>
                                 <div>
                                     <label for="due_date"
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">Due
                                         date</label>
-                                    <input type="date" id="due_date" name="due_date"
+                                    <input type="datetime-local" id="due_date" name="due_date"
                                         class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300"
-                                        value="{{ old('due_date', $task->due_date ?? date('Y-m-d')) }}">
+                                        value="{{ $task->due_date }}" style="color-scheme: dark;">
                                 </div>
                             </div>
+                            <div>
+                                <label for="preset_time"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Reminder</label>
+                                <select id="preset_time" name="preset_time"
+                                    class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 dark:bg-gray-700 dark:text-gray-300"
+                                    required>
+                                    <option value="5_minutes_before"
+                                        {{ $task->reminders[0]->preset_time == '5_minutes_before' ? 'selected' : '' }}>
+                                        5 minutes before
+                                    </option>
+                                    <option value="10_minutes_before"
+                                        {{ $task->reminders[0]->preset_time == '10_minutes_before' ? 'selected' : '' }}>
+                                        10 minutes before
+                                    </option>
+                                    <option value="30_minutes_before"
+                                        {{ $task->reminders[0]->preset_time == '30_minutes_before' ? 'selected' : '' }}>
+                                        30 minutes before
+                                    </option>
+                                    <option value="1_hour_before"
+                                        {{ $task->reminders[0]->preset_time == '1_hour_before' ? 'selected' : '' }}>
+                                        1 hour before
+                                    </option>
+                                    <option value="1_day_before"
+                                        {{ $task->reminders[0]->preset_time == '1_day_before' ? 'selected' : '' }}>
+                                        1 day before
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">Reminders</h2>
-                            <button type="button" id="add_reminder"
-                                class="inline-flex items-center px-4 py-2 bg-green-600 dark:bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-500 dark:hover:bg-green-400 active:bg-green-700 dark:active:bg-green-600 focus:outline-none focus:border-green-700 focus:ring ring-green-300 dark:focus:ring-green-600 disabled:opacity-25 transition ease-in-out duration-150">
-                                Add Reminder
-                            </button>
-                        </div>
-                        @include('tasks.reminder')
 
                         <div class="mt-6 flex justify-between">
                             <a class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-gray-600 active:bg-gray-900 dark:active:bg-gray-800 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 dark:focus:ring-gray-600 disabled:opacity-25 transition ease-in-out duration-150"
