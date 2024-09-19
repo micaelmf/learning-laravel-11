@@ -20,6 +20,7 @@ class Task extends Model
         'description',
         'due_date',
         'status',
+        'user_id',
     ];
 
     // Uma tarefa pode ter muitos lembretes

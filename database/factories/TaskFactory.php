@@ -23,6 +23,7 @@ class TaskFactory extends Factory
             'due_date' => $this->faker->date,
             'status' => $this->faker->randomElement(['pending', 'doing', 'completed', 'archived']),
             'deleted_at' => Random::generate(1) == 1 ? now() : null,
+            'user_id' => null,
         ];
     }
 }

@@ -3,14 +3,19 @@
 namespace App\Services;
 
 use App\Repositories\TaskRepository;
+use App\Services\ReminderService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TaskService
 {
     protected $taskRepository;
+    protected $reminderService;
 
-    public function __construct(TaskRepository $taskRepository)
+    public function __construct(TaskRepository $taskRepository, ReminderService $reminderService)
     {
         $this->taskRepository = $taskRepository;
+        $this->reminderService = $reminderService;
     }
 
     public function getTasks(array $params)
@@ -29,33 +34,35 @@ class TaskService
 
     public function createTask(array $data)
     {
-        $task = $this->taskRepository->createTask($data);
+        DB::beginTransaction();
 
-        if (isset($data['reminder'])) {
-            // converter o formato 30_minutes_before em uma data baseado na data de vencimento
-            $data['reminder'] = array_map(function ($reminder) use ($task) {
-                $explode = explode('_', $reminder);
-                $timeQuantity = $explode['0'];
-                $timeUnit = $explode['1'];
-                $reminderDate = date('Y-m-d H:i:s', strtotime($task->due_date . ' - ' . $timeQuantity . ' ' . $timeUnit));
+        try {
+            $data['user_id'] = Auth::id();
+            $task = $this->taskRepository->createTask($data);
+            $this->reminderService->createReminder($task->id, $data);
 
-                return [
-                    'reminder_date' => $reminderDate,
-                    'user_id' => auth()->id(),
-                ];
-            }, $data['reminder']);
-
-            dd($data['reminder']);
-
-            $task->reminders()->createMany($data['reminder']);
+            DB::commit();
+            return $task;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
         }
-
-        return $task;
     }
 
     public function updateTask(string $id, array $data)
     {
-        return $this->taskRepository->updateTask($id, $data);
+        DB::beginTransaction();
+
+        try {
+            $task = $this->taskRepository->updateTask($id, $data);
+            $this->reminderService->updateReminder($id, $data);
+
+            DB::commit();
+            return $task;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     public function deleteTask(string $id)

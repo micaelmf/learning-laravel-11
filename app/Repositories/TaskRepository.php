@@ -24,7 +24,7 @@ class TaskRepository
 
     public function getTask(string $id)
     {
-        return $this->task->findOrFail($id);
+        return $this->task->findOrFail($id)->load('reminders');
     }
 
     protected function applyFilters($query, array $params)
