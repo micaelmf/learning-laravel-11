@@ -11,6 +11,16 @@ class Reminder extends Model
 
     protected $table = 'task_reminders';
 
+    protected $fillable = [
+        'preset_time',
+        'reminder_time',
+        'status',
+        'send_by',
+        'job_id',
+        'task_id',
+        'user_id',
+    ];
+
     public function task()
     {
         return $this->belongsTo(Task::class);
