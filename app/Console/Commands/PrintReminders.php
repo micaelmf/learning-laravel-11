@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Events\TaskOverdue;
 use App\Models\Reminder;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -34,6 +35,8 @@ class PrintReminders extends Command
             ->get();
 
         foreach ($reminders as $reminder) {
+            sleep(2);
+            event(new TaskOverdue($reminder));
             $this->info($reminder);
         }
 
