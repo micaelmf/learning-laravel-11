@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 
 class TaskRepository
 {
@@ -15,8 +16,7 @@ class TaskRepository
 
     public function getTasks(array $params)
     {
-        $query = $this->task->query();
-
+        $query = $this->task->where('user_id', Auth::id());
         $query = $this->applyFilters($query, $params);
 
         return $query->latest()->paginate(10);
@@ -24,7 +24,7 @@ class TaskRepository
 
     public function getTask(string $id)
     {
-        return $this->task->findOrFail($id);
+        return $this->task->findOrFail($id)->load('reminders');
     }
 
     protected function applyFilters($query, array $params)

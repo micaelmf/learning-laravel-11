@@ -3,14 +3,19 @@
 namespace App\Services;
 
 use App\Repositories\TaskRepository;
+use App\Services\ReminderService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TaskService
 {
     protected $taskRepository;
+    protected $reminderService;
 
-    public function __construct(TaskRepository $taskRepository)
+    public function __construct(TaskRepository $taskRepository, ReminderService $reminderService)
     {
         $this->taskRepository = $taskRepository;
+        $this->reminderService = $reminderService;
     }
 
     public function getTasks(array $params)
@@ -29,12 +34,35 @@ class TaskService
 
     public function createTask(array $data)
     {
-        return $this->taskRepository->createTask($data);
+        DB::beginTransaction();
+
+        try {
+            $data['user_id'] = Auth::id();
+            $task = $this->taskRepository->createTask($data);
+            $this->reminderService->createReminder($task->id, $data);
+
+            DB::commit();
+            return $task;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     public function updateTask(string $id, array $data)
     {
-        return $this->taskRepository->updateTask($id, $data);
+        DB::beginTransaction();
+
+        try {
+            $task = $this->taskRepository->updateTask($id, $data);
+            $this->reminderService->updateReminder($id, $data);
+
+            DB::commit();
+            return $task;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     public function deleteTask(string $id)

@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="flex-shrink-0 sm:flex sm:flex-col sm:items-end mt-4 sm:mt-0">
                                     <span
-                                        class="task-status inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-black text-gray-100 {{ $textDecoration }}">
+                                        class="task-status inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-black {{ $textDecoration }}">
                                         {{ $task->status }}
                                     </span>
                                     <p class="text-sm font-semibold leading-6 text-gray-300">{{ $task->due_date }}</p>
