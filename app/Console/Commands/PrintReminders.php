@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+// use App\Events\NewNotification;
 use App\Events\TaskOverdue;
 use App\Models\Reminder;
 use Carbon\Carbon;
@@ -29,16 +30,17 @@ class PrintReminders extends Command
     public function handle()
     {
         $now = Carbon::now();
-        $reminders = Reminder::where('status', '!=', 'doing')
-            ->where('status', '!=', 'archived')
+        $reminders = Reminder::with('task')
+            ->where('status', '!=', 'sent')
             ->where('reminder_time', '<', $now)
             ->get();
 
         foreach ($reminders as $reminder) {
-            sleep(2);
-            event(new TaskOverdue($reminder));
-            $this->info($reminder);
+            event(new TaskOverdue($reminder, $reminder->user));
         }
+
+        // Update the status of the reminders that were sent
+        Reminder::whereIn('id', $reminders->pluck('id'))->update(['status' => 'sent']);
 
         return 0;
     }

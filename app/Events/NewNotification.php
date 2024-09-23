@@ -8,23 +8,20 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Queue\SerializesModels;
 
-class TaskOverdue implements ShouldBroadcast
+class NewNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $reminder;
-    public $user;
+    public $message;
 
     /**
      * Create a new event instance.
      */
-    public function __construct($reminder, $user)
+    public function __construct($message)
     {
-        $this->reminder = $reminder;
-        $this->user = $user;
+        $this->message = $message;
     }
 
     /**
@@ -34,16 +31,11 @@ class TaskOverdue implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        // Para transmitir um evento em vários canais simultaneamente, você pode retornar um array de canais:
-        // return [
-        //     new PrivateChannel('channel-name'),
-        // ];
-
-        return new PrivateChannel('notifications.' . $this->user->id);
+        return new Channel('notifications');
     }
 
     public function broadcastWith()
     {
-        return ['data' => $this->reminder];
+        return ['message' => $this->message];
     }
 }

@@ -1,0 +1,37 @@
+{
+    "authHost": "http://localhost",
+    "authEndpoint": "/broadcasting/auth",
+    "clients": [
+        {
+            "appId": "b63d388eafb33d5d",
+            "key": "8e29956be4ac4ee5a3f241f9ac2feb79"
+        }
+    ],
+    "database": "redis",
+    "databaseConfig": {
+        "redis": {
+            "host": "redis",
+            "port": "6379"
+        }
+    },
+    "devMode": true,
+    "host": null,
+    "port": "6001",
+    "protocol": "http",
+    "socketio": {},
+    "secureOptions": 67108864,
+    "sslCertPath": "",
+    "sslKeyPath": "",
+    "sslCertChainPath": "",
+    "sslPassphrase": "",
+    "subscribers": {
+        "http": true,
+        "redis": true
+    },
+    "apiOriginAllow": {
+        "allowCors": true,
+        "allowOrigin": "http://localhost:80",
+        "allowMethods": "GET, POST",
+        "allowHeaders": "Origin, Content-Type, X-Auth-Token, X-Requested-With, Accept, Authorization, X-CSRF-TOKEN, X-Socket-Id"
+    }
+}

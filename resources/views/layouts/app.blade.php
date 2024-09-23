@@ -19,6 +19,14 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script>
+        window.Laravel = {!! json_encode([
+            'user' => [
+                'id' => auth()->user()->id,
+            ],
+        ]) !!};
+    </script>
 </head>
 
 <body class="font-sans antialiased">
