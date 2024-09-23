@@ -93,8 +93,6 @@ function getCookie(name) {
 const userId = window.Laravel.user.id; // Obter o ID do usuário da variável global
 const token = getCookie('XSRF-TOKEN'); // Substitua 'auth_token' pelo nome do cookie que contém o token
 
-console.log('Token:', token);
-
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: import.meta.env.VITE_PUSHER_APP_KEY,
@@ -123,7 +121,6 @@ window.Echo = new Echo({
 
 window.Echo.private('notifications.' + userId)
     .listen('TaskOverdue', (e) => {
-        console.log(e);
         toastr.info(`<a href="/tasks/${e.data.task.id}/edit">${e.data.task.name}</a>`, 'Lembrete de Tarefa', { allowHtml: true });
 
         const audio = new Audio('/audio/notification.mp3');

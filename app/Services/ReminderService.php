@@ -44,8 +44,10 @@ class ReminderService
 
     public function handleReminders(int $taskId, array $data): array
     {
+        $status = $data['status'] === 'completed' ? 'sent' : 'pending';
+
         return [
-            'status' => 'pending',
+            'status' => $status,
             'preset_time' => $data['preset_time'],
             'reminder_time' => $this->handlerReminderTime($data['preset_time'], $data['due_date']),
             'user_id' => Auth::id(),
