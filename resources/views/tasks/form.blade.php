@@ -34,7 +34,7 @@
                         $route = route('tasks.update', $task->id ?? '');
                         $method = 'PUT';
 
-                        $task->due_date = (new DateTimeImmutable($task->due_date))->format('Y-m-d H:m');
+                        $task->due_date = (new DateTimeImmutable($task->due_date))->format('Y-m-d H:i');
                     } else {
                         $route = route('tasks.store');
                         $method = 'POST';
@@ -42,7 +42,7 @@
                         $task->name = old('name', '');
                         $task->description = old('description', '');
                         $task->status = old('status', 'pending');
-                        $task->due_date = old('due_date', date('Y-m-d H:m'));
+                        $task->due_date = old('due_date', date('Y-m-d H:i'));
 
                         $task->reminders = [new stdClass()];
                         $task->reminders[0]->preset_time = old('preset_time', '5_minutes_before');
