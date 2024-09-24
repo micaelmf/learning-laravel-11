@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Services\ReminderService;
 use App\Services\TaskService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -18,12 +20,17 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $countTasksToday = [
-            "doing" => $this->taskService->countTasksWithStatusDoingTodayByUser(),
-            "pending" =>  $this->taskService->countTasksWithStatusPendingTodayByUser(),
-            "completed" => $this->taskService->countTasksWithStatusCompletedTodayByUser(),
-            "allExceptArchived" => $this->taskService->countAllTasksExceptArchivedByUser(),
-        ];
+        $userId = Auth::id();
+        $cacheKey = "dashboard:tasks:count:{$userId}";
+
+        $countTasksToday = Cache::remember($cacheKey, 60, function () {
+            return [
+                "doing" => $this->taskService->countTasksWithStatusDoingTodayByUser(),
+                "pending" =>  $this->taskService->countTasksWithStatusPendingTodayByUser(),
+                "completed" => $this->taskService->countTasksWithStatusCompletedTodayByUser(),
+                "allExceptArchived" => $this->taskService->countAllTasksExceptArchivedByUser(),
+            ];
+        });
 
         $remindersToday = $this->reminderService->getReminderTodayByUser();
 

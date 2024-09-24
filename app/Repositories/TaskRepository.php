@@ -5,7 +5,7 @@ namespace App\Repositories;
 use App\Models\Task;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class TaskRepository
 {
@@ -18,10 +18,15 @@ class TaskRepository
 
     public function getTasks(array $params)
     {
-        $query = $this->task->where('user_id', Auth::id());
-        $query = $this->applyFilters($query, $params);
+        $userId = Auth::id();
+        $cacheKey = "tasks:user:{$userId}";
 
-        return $query->latest()->paginate(10);
+        return Cache::remember($cacheKey, 60, function () use ($params, $userId) {
+            $query = $this->task->where('user_id', $userId);
+            $query = $this->applyFilters($query, $params);
+
+            return $query->latest()->paginate(10);
+        });
     }
 
     public function getTask(string $id)
@@ -98,13 +103,16 @@ class TaskRepository
 
     public function createTask(array $data)
     {
+        Cache::forget("tasks:user:" . Auth::id());
+
         return $this->task->create($data);
     }
 
     public function updateTask(string $id, array $data)
     {
-        $task = $this->task->findOrFail($id);
+        Cache::forget("tasks:user:" . Auth::id());
 
+        $task = $this->task->findOrFail($id);
         $task->update($data);
 
         return $task;
@@ -112,6 +120,8 @@ class TaskRepository
 
     public function deleteTask(string $id)
     {
+        Cache::forget("tasks:user:" . Auth::id());
+
         $task = $this->task->findOrFail($id);
 
         return $task->delete();
@@ -119,6 +129,8 @@ class TaskRepository
 
     public function restoreTask(string $id)
     {
+        Cache::forget("tasks:user:" . Auth::id());
+
         $task = $this->task->withTrashed()->findOrFail($id);
 
         return $task->restore();
@@ -126,8 +138,9 @@ class TaskRepository
 
     public function changeStatus(string $id, string $status)
     {
-        $task = $this->task->findOrFail($id);
+        Cache::forget("tasks:user:" . Auth::id());
 
+        $task = $this->task->findOrFail($id);
         $task->status = $status;
 
         return $task->save();

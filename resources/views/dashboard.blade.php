@@ -7,7 +7,9 @@
 
     <div class="py-12 max-w-7xl mx-auto sm:px-6 lg:px-8 p-4">
         <div>
-            <h2 class="text-xl mb-4 font-semibold text-gray-800 dark:text-gray-200">Today's tasks</h2>
+            <h2 class="text-xl mb-4 font-semibold text-gray-800 dark:text-gray-200">
+                Today's tasks
+            </h2>
             <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
                 <div class="bg-white dark:bg-gray-800 dark:text-gray-200 rounded-lg shadow-lg border border-yellow-500">
                     <div class="flex items-center justify-between p-6">
