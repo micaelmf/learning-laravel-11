@@ -27,6 +27,26 @@ class TaskService
         return $this->taskRepository->getTasks($params);
     }
 
+    public function countTasksWithStatusDoingTodayByUser()
+    {
+        return $this->taskRepository->countTasksWithStatusDoingTodayByUser();
+    }
+
+    public function countTasksWithStatusPendingTodayByUser()
+    {
+        return $this->taskRepository->countTasksWithStatusPendingTodayByUser();
+    }
+
+    public function countTasksWithStatusCompletedTodayByUser()
+    {
+        return $this->taskRepository->countTasksWithStatusCompletedTodayByUser();
+    }
+
+    public function countAllTasksExceptArchivedByUser()
+    {
+        return $this->taskRepository->countAllTasksExceptArchivedByUser();
+    }
+
     public function getTask(string $id)
     {
         return $this->taskRepository->getTask($id);

@@ -31,11 +31,11 @@ class PrintReminders extends Command
     {
         $now = Carbon::now();
         $reminders = Reminder::with('task')
-            ->where('status', '!=', 'sent')
+            ->where('status', 'pending')
+            ->where('reminder_time', '<', $now)
             ->whereHas('task', function ($query) {
                 $query->whereNotIn('status', ['completed', 'archived']);
             })
-            ->where('reminder_time', '<', $now)
             ->get();
 
         foreach ($reminders as $reminder) {

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('preset_time');
             $table->timestamp('reminder_time')->nullable();
             $table->enum('send_by', ['popup', 'email', 'sms'])->default('popup');
-            $table->enum('status', ['pending', 'prepared', 'sent'])->default('pending');
+            $table->enum('status', ['pending', 'canceled', 'sent', 'visualized'])->default('pending');
             $table->string('job_id')->nullable();
             $table->foreignId('task_id')->constrained('tasks')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');

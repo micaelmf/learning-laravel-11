@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Models\Reminder;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ReminderRepository
 {
@@ -32,5 +34,24 @@ class ReminderRepository
     {
         $reminder = $this->reminder->where('task_id', $data['task_id'])->first();
         return $reminder->update($data);
+    }
+
+    public function getReminderTodayByUser()
+    {
+        $today = Carbon::today();
+        return $this->reminder->where('user_id', Auth::id())
+            ->whereIn('status', ['pending', 'sent'])
+            ->whereBetween('reminder_time', [$today->copy()->startOfDay(), $today->copy()->endOfDay()])
+            ->with('task')
+            ->orderBy('reminder_time', 'asc')
+            ->get();
+    }
+
+    public function changeStatus(string $id, string $status)
+    {
+        $reminder = $this->reminder->findOrFail($id);
+
+        $reminder->status = $status;
+        $reminder->save();
     }
 }

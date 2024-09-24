@@ -42,9 +42,22 @@ class ReminderService
         return $this->reminderRepository->updateReminder($reminder, $taskId);
     }
 
+    public function getReminderTodayByUser()
+    {
+        return $this->reminderRepository->getReminderTodayByUser();
+    }
+
     public function handleReminders(int $taskId, array $data): array
     {
-        $status = $data['status'] === 'completed' ? 'sent' : 'pending';
+        $status = 'pending';
+
+        if (
+            $data['status'] === 'completed'
+            || $data['status'] === 'archived'
+            || $data['due_date'] < date('Y-m-d H:i:s')
+        ) {
+            $status = 'canceled';
+        }
 
         return [
             'status' => $status,
@@ -62,5 +75,10 @@ class ReminderService
         $timeUnit = $explode['1'];
 
         return date('Y-m-d H:i:s', strtotime($dueDate . ' - ' . $timeQuantity . ' ' . $timeUnit));
+    }
+
+    public function changeStatus(string $id, string $status)
+    {
+        return $this->reminderRepository->changeStatus($id, $status);
     }
 }

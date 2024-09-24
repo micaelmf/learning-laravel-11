@@ -3,7 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class TaskRepository
 {
@@ -25,6 +27,43 @@ class TaskRepository
     public function getTask(string $id)
     {
         return $this->task->findOrFail($id)->load('reminders');
+    }
+
+    public function countTasksWithStatusDoingTodayByUser()
+    {
+        $today = Carbon::today();
+        $query = $this->task->where('user_id', Auth::id())
+            ->where('status', 'doing')
+            ->whereBetween('due_date', [$today->copy()->startOfDay(), $today->copy()->endOfDay()]);
+
+        return $query->count();
+    }
+
+    public function countTasksWithStatusPendingTodayByUser()
+    {
+        $today = Carbon::today();
+        $query = $this->task->where('user_id', Auth::id())
+            ->where('status', 'pending')
+            ->whereBetween('due_date', [$today->copy()->startOfDay(), $today->copy()->endOfDay()]);
+
+        return $query->count();
+    }
+
+    public function countTasksWithStatusCompletedTodayByUser()
+    {
+        $today = Carbon::today();
+        $query = $this->task->where('user_id', Auth::id())
+            ->where('status', 'completed')
+            ->whereBetween('due_date', [$today->copy()->startOfDay(), $today->copy()->endOfDay()]);
+
+        return $query->count();
+    }
+
+    public function countAllTasksExceptArchivedByUser()
+    {
+        return $this->task->where('user_id', Auth::id())
+            ->where('status', '!=', 'archived')
+            ->count();
     }
 
     protected function applyFilters($query, array $params)

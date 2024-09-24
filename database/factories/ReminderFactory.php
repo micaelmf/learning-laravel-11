@@ -29,7 +29,7 @@ class ReminderFactory extends Factory
                 '1_day_before',
             ]),
             'reminder_time' => null,
-            'status' => $this->faker->randomElement(['pending', 'prepared', 'sent']),
+            'status' => $this->faker->randomElement(['pending', 'canceled', 'sent', 'visualized']),
             'send_by' => $this->faker->randomElement(['popup', 'email', 'sms']),
             'job_id' => null,
             'task_id' => null,
