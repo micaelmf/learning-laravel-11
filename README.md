@@ -10,6 +10,12 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 - Blade Templates
 - Bootstrap 5
 - Jquery
+- Telescope
+- Horizon
+- Redis
+- Queues
+- Events
+- Sentry
 
 ## Conceitos aplicados
 

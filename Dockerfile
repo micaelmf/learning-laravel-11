@@ -32,6 +32,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
+# Instale a extensão excimer via PECL
+RUN pecl install excimer \
+    && docker-php-ext-enable excimer
+
 # Configurações do Xdebug
 # COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
