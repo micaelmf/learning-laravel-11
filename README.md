@@ -15,6 +15,7 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 - Redis
 - Queues
 - Events
+- Sentry
 
 ## Conceitos aplicados
 
