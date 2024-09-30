@@ -32,7 +32,9 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 - **Trabalhos em Background (Queues)**: Execução de tarefas em segundo plano.
 - **Testes Automatizados**: Testes unitários e de integração para garantir a qualidade do código.
 - **Docker**: Contêinerização da aplicação para facilitar o desenvolvimento e a implantação.
-- **erenciamento de Dependências com Composer**: Instalação e atualização de pacotes PHP.
+- **Gerenciamento de Dependências com Composer**: Instalação e atualização de pacotes PHP.
+- **Monitoramento e Depuração**: Uso do Laravel Telescope para monitoramento detalhado durante o desenvolvimento e testes.
+- **Visualização de Métricas**: Uso do Grafana para monitoramento de desempenho e saúde da aplicação em produção.
 
 ## Como executar
 
@@ -106,3 +108,9 @@ Este é um projeto de exemplo de um sistema de gerenciamento de tarefas (To-Do L
 - [ ] Lixeira para recuperar tarefas excluídas
 - [x] Validação de dados de entrada
 - [x] Interface amigável com templates Blade e Bootstrap
+
+## Links
+
+- Grafana: http://localhost:3000/
+- Horizon: http://localhost:8000/horizon/dashboard
+- Prometheus: http://localhost:9090/
